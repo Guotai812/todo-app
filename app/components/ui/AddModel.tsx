@@ -1,7 +1,7 @@
 import { use, useState } from "react";
 import Model from "./Model";
 import Input from "./Input";
-import Button from "./Button";
+import { Button } from "@/components/ui/button";
 import useTaskContext from "@/app/contexts/TaskContext";
 
 interface AddModelProps {
@@ -21,11 +21,12 @@ export default function AddModel({ hideModel }: AddModelProps) {
         onChange={(e) => setTaskContent(e.target.value)}
       />
       <div className="flex justify-end gap-2 mt-4">
-        <Button kind="cancel" onClick={hideModel}>
+        <Button variant="default" size={"sm"} onClick={hideModel}>
           Cancel
         </Button>
         <Button
-          kind="confirm"
+          variant="outline"
+          size={"sm"}
           onClick={() => {
             addTask(taskContent), hideModel();
           }}
