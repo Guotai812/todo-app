@@ -1,40 +1,59 @@
-import { use, useState } from "react";
+import { useForm } from "react-hook-form";
 import Model from "./Model";
 import Input from "./Input";
 import { Button } from "@/components/ui/button";
 import useTaskContext from "@/app/contexts/TaskContext";
+import { TaskForm } from "@/app/schema/TaskFormSchema";
+import { Textarea } from "@/components/ui/textarea";
 
 interface AddModelProps {
   hideModel: () => void;
 }
 
 export default function AddModel({ hideModel }: AddModelProps) {
-  const [taskContent, setTaskContent] = useState<string>("");
+  const { register, handleSubmit, watch, reset } = useForm<TaskForm>({
+    defaultValues: { task: "", description: "" },
+  });
+  const taskValue = watch("task") ?? "";
   const { addTask } = useTaskContext();
+
+  const onSubmit = (data: TaskForm) => {
+    addTask(data);
+    reset();
+    hideModel();
+  };
+
   return (
     <Model title="Add New Task" hideModel={hideModel}>
-      <Input
-        type="text"
-        className="border-1 w-full text-black px-2"
-        placeholder="Enter your task"
-        value={taskContent}
-        onChange={(e) => setTaskContent(e.target.value)}
-      />
-      <div className="flex justify-end gap-2 mt-4">
-        <Button variant="default" size={"sm"} onClick={hideModel}>
-          Cancel
-        </Button>
-        <Button
-          variant="outline"
-          size={"sm"}
-          onClick={() => {
-            addTask(taskContent), hideModel();
-          }}
-          disabled={!taskContent.trim()}
-        >
-          Confirm
-        </Button>
-      </div>
+      <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          type="text"
+          {...register("task")}
+          className="border w-full text-black px-2 py-2"
+          placeholder="Enter your task"
+        />
+
+        <Textarea
+          {...register("description")}
+          placeholder="Enter description (optional)"
+          wrap="soft"
+          rows={6}
+        />
+
+        <div className="flex justify-end gap-2 mt-4">
+          <Button type="button" variant="default" size="sm" onClick={hideModel}>
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            variant="outline"
+            size="sm"
+            disabled={!taskValue.trim()}
+          >
+            Confirm
+          </Button>
+        </div>
+      </form>
     </Model>
   );
 }
