@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import useIdxContext from "@/app/contexts/TaskIdxContext";
+import { TaskForm } from "@/app/schema//TaskFormSchema";
 
 export default function Task({
   openEditModel,
@@ -9,7 +10,7 @@ export default function Task({
 }: {
   openEditModel: () => void;
   openDeleteModel: () => void;
-  task: string;
+  task: TaskForm;
   idx: number;
 }) {
   const { setIdx } = useIdxContext();
@@ -19,9 +20,16 @@ export default function Task({
   };
   return (
     <div className="flex justify-between shadow-sm min-h-12 items-center px-4 py-2 text-black hover:bg-gray-200">
-      <p className="w-1/2">{task}</p>
+      <p className="w-1/3  break-words whitespace-pre-wrap">{task.task}</p>
+      <p className="w-1/3  break-words whitespace-pre-wrap">
+        {task.description}
+      </p>
       <div className="w-1/6 flex justify-between">
-        <Button variant="link" size={"sm"} onClick={() => buttonClickHandler(openEditModel)}>
+        <Button
+          variant="link"
+          size={"sm"}
+          onClick={() => buttonClickHandler(openEditModel)}
+        >
           Edit
         </Button>
         <Button

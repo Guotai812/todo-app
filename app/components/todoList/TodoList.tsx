@@ -38,7 +38,7 @@ export default function TodoList() {
           </li>
         ))
       )}
-      {editModel && <EditModel idx={idx} hideModel={hidEdit} />}
+      {editModel && <EditModel hideModel={hidEdit} />}
       {deleteModel && (
         <DoubleConfirmModel
           idx={idx}
