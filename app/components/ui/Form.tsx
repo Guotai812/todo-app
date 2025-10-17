@@ -2,9 +2,9 @@
 import { useForm } from "react-hook-form";
 import Input from "./Input";
 import { Button } from "@/components/ui/button";
-import useTaskContext from "@/app/contexts/TaskContext";
 import { TaskForm } from "@/app/schema/TaskFormSchema";
 import { Textarea } from "@/components/ui/textarea";
+import { useTaskStore } from "../stores/useTaskStore";
 
 interface FormProps {
   hideModel: () => void;
@@ -13,7 +13,7 @@ interface FormProps {
 }
 
 export default function Form({ hideModel, defaultValues, idx }: FormProps) {
-  const { addTask, editTask } = useTaskContext();
+  const { addTask, editTask } = useTaskStore();
   const { register, handleSubmit, watch, reset } = useForm<TaskForm>({
     defaultValues: defaultValues,
   });

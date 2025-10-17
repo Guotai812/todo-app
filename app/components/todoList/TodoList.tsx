@@ -4,23 +4,15 @@ import EditModel from "@/app/components/ui/EditModel";
 import Task from "./Task";
 import TodoListContainer from "./TodoListContainer";
 import TopBar from "./TopBar";
-import useTaskContext from "@/app/contexts/TaskContext";
-import useIdxContext from "@/app/contexts/TaskIdxContext";
 import DoubleConfirmModel from "../ui/DoubleConfrimModel";
+import { useTaskStore } from "../stores/useTaskStore";
+import { useIdxStore } from "../stores/useIdxStore";
+import { useModalStore } from "../stores/useModalStore";
 
 export default function TodoList() {
-  const {
-    isShow: editModel,
-    showModel: showEdit,
-    hideModel: hidEdit,
-  } = useModel();
-  const {
-    isShow: deleteModel,
-    showModel: showDelete,
-    hideModel: hidDelete,
-  } = useModel();
-  const { tasks } = useTaskContext();
-  const { idx } = useIdxContext();
+  const { isOpen, show, hide } = useModalStore();
+  const { tasks } = useTaskStore();
+  const { idx } = useIdxStore();
   return (
     <TodoListContainer>
       <TopBar />
@@ -32,17 +24,17 @@ export default function TodoList() {
             <Task
               idx={idx}
               task={task}
-              openEditModel={showEdit}
-              openDeleteModel={showDelete}
+              openEditModel={() => show("edit")}
+              openDeleteModel={() => show("double")}
             />
           </li>
         ))
       )}
-      {editModel && <EditModel hideModel={hidEdit} />}
-      {deleteModel && (
+      {isOpen("edit") && <EditModel hideModel={() => hide("edit")} />}
+      {isOpen("double") && (
         <DoubleConfirmModel
           idx={idx}
-          hideModel={hidDelete}
+          hideModel={() => hide("double")}
           message="Are you sure to delete it?"
         />
       )}

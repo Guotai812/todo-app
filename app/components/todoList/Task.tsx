@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import useIdxContext from "@/app/contexts/TaskIdxContext";
 import { TaskForm } from "@/app/schema//TaskFormSchema";
+import { useIdxStore } from "../stores/useIdxStore";
 
 export default function Task({
   openEditModel,
@@ -13,7 +13,7 @@ export default function Task({
   task: TaskForm;
   idx: number;
 }) {
-  const { setIdx } = useIdxContext();
+  const { setIdx } = useIdxStore();
   const buttonClickHandler = (showModel: () => void) => {
     showModel();
     setIdx(idx);
