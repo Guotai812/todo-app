@@ -4,22 +4,19 @@ import Container from "./components/ui/Container";
 import Div from "./components/ui/Div";
 import Title from "./components/home/Title";
 import TodoList from "./components/todoList/TodoList";
-import useModel from "./customHook/useModel";
 import AddModel from "./components/ui/AddModel";
-import { IdxContextProvider } from "./contexts/TaskIdxContext";
+import { useModalStore } from "./components/stores/useModalStore";
 
 export default function Home() {
-  const { isShow, showModel, hideModel } = useModel();
+  const { isOpen, show, hide } = useModalStore();
   return (
     <>
-      {isShow && <AddModel hideModel={hideModel} />}
+      {isOpen("add") && <AddModel hideModel={() => hide("add")} />}
       <Container>
         <Div>
           <Title title="Welcome" />
-          <AddButton onClick={showModel} />
-          <IdxContextProvider>
-            <TodoList />
-          </IdxContextProvider>
+          <AddButton onClick={() => show("add")} />
+          <TodoList />
         </Div>
       </Container>
     </>

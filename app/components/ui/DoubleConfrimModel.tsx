@@ -1,6 +1,6 @@
 import Model from "./Model";
 import { Button } from "@/components/ui/button";
-import useTaskContext from "@/app/contexts/TaskContext";
+import { useTaskStore } from "../stores/useTaskStore";
 
 export default function DoubleConfirmModel({
   hideModel,
@@ -11,7 +11,7 @@ export default function DoubleConfirmModel({
   message: string;
   idx: number;
 }) {
-  const { removeTask } = useTaskContext();
+  const { removeTask } = useTaskStore();
   return (
     <Model title="WARNING" hideModel={hideModel}>
       <div className="text-black text-center">{message}</div>
