@@ -1,33 +1,22 @@
-'use client';
+"use client";
 
-import { create } from 'zustand';
-import { TaskForm } from '@/app/schema/TaskFormSchema';
+import { create } from "zustand";
+import { TaskForm } from "@/app/schema/TaskFormSchema";
 
 type TaskState = {
+  selectedId: string;
   tasks: TaskForm[];
-  addTask: (task: TaskForm) => void;
-  editTask: (taskIdx: number, newTask: TaskForm) => void;
-  removeTask: (taskIdx: number) => void;
+  setTask: (tasks: TaskForm[]) => void;
+  setSelectedId: (taskId: string) => void;
   reset: () => void;
+  resetSelectedId: () => void;
 };
 
 export const useTaskStore = create<TaskState>((set) => ({
+  selectedId: "",
   tasks: [],
-  addTask: (task) =>
-    set((state) => ({ tasks: [...state.tasks, task] })),
-
-  editTask: (taskIdx, newTask) =>
-    set((state) => {
-      if (taskIdx < 0 || taskIdx >= state.tasks.length) return state;
-      const next = state.tasks.slice();
-      next[taskIdx] = newTask;
-      return { tasks: next };
-    }),
-
-  removeTask: (taskIdx) =>
-    set((state) => ({
-      tasks: state.tasks.filter((_, i) => i !== taskIdx),
-    })),
-
+  setTask: (tasks) => set({ tasks }),
+  setSelectedId: (taskId) => set({ selectedId: taskId }),
   reset: () => set({ tasks: [] }),
+  resetSelectedId: () => set({ selectedId: "" }),
 }));

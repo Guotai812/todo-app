@@ -1,7 +1,6 @@
 "use client";
 import Model from "./Model";
 import Form from "./Form";
-import { useIdxStore } from "../stores/useIdxStore";
 import { useTaskStore } from "../stores/useTaskStore";
 
 interface EditModelProps {
@@ -9,18 +8,17 @@ interface EditModelProps {
 }
 
 export default function EditModel({ hideModel }: EditModelProps) {
-  const { tasks } = useTaskStore();
-  const { idx } = useIdxStore();
-
+  const { tasks, selectedId } = useTaskStore();
+  const task = tasks.find((t) => t.id === selectedId);
   return (
     <Model title="Edit New Task" hideModel={hideModel}>
       <Form
         hideModel={hideModel}
         defaultValues={{
-          task: tasks[idx].task,
-          description: tasks[idx].description || "",
+          id: task?.id ?? "",
+          title: task?.title ?? "",
+          description: task?.description || "",
         }}
-        idx={idx}
       />
     </Model>
   );

@@ -1,26 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { TaskForm } from "@/app/schema//TaskFormSchema";
-import { useIdxStore } from "../stores/useIdxStore";
+import { useTaskStore } from "../stores/useTaskStore";
 
 export default function Task({
   openEditModel,
   openDeleteModel,
   task,
-  idx,
+  id,
 }: {
   openEditModel: () => void;
   openDeleteModel: () => void;
   task: TaskForm;
-  idx: number;
+  id: string;
 }) {
-  const { setIdx } = useIdxStore();
+  const {setSelectedId} = useTaskStore();
   const buttonClickHandler = (showModel: () => void) => {
     showModel();
-    setIdx(idx);
+    setSelectedId(id);
   };
   return (
     <div className="flex justify-between shadow-sm min-h-12 items-center px-4 py-2 text-black hover:bg-gray-200">
-      <p className="w-1/3  break-words whitespace-pre-wrap">{task.task}</p>
+      <p className="w-1/3  break-words whitespace-pre-wrap">{task.title}</p>
       <p className="w-1/3  break-words whitespace-pre-wrap">
         {task.description}
       </p>
