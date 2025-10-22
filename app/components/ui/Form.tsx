@@ -13,7 +13,7 @@ interface FormProps {
 }
 
 export default function Form({ hideModel, defaultValues }: FormProps) {
-  const { hide } = useModalStore();
+  const { hide, show } = useModalStore();
   const { setTask, selectedId, resetSelectedId } = useTaskStore();
   const { register, handleSubmit, watch, reset } = useForm<Content>({
     defaultValues: defaultValues,
