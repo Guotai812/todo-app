@@ -2,20 +2,21 @@
 import { useForm } from "react-hook-form";
 import Input from "./Input";
 import { Button } from "@/components/ui/button";
-import { Content } from "@/app/schema/TaskFormSchema";
 import { Textarea } from "@/components/ui/textarea";
 import { useTaskStore } from "../stores/useTaskStore";
 import { useModalStore } from "../stores/useModalStore";
+import { TaskForm } from "@/app/schema/TaskFormSchema";
+import { addTask, editTask, fetchAllTasks } from "@/app/services/task-service";
 
 interface FormProps {
   hideModel: () => void;
-  defaultValues: Content;
+  defaultValues: TaskForm;
 }
 
 export default function Form({ hideModel, defaultValues }: FormProps) {
-  const { hide, show } = useModalStore();
+  const { hide } = useModalStore();
   const { setTask, selectedId, resetSelectedId } = useTaskStore();
-  const { register, handleSubmit, watch, reset } = useForm<Content>({
+  const { register, handleSubmit, watch, reset } = useForm<TaskForm>({
     defaultValues: defaultValues,
   });
   const taskValue = watch("title") ?? "";
@@ -26,29 +27,10 @@ export default function Form({ hideModel, defaultValues }: FormProps) {
 
   let onSubmit;
   if (selectedId.trim() === "") {
-    onSubmit = async (data: Content) => {
+    onSubmit = async (data: TaskForm) => {
       try {
-        const response = await fetch("http://localhost:5299/api/tasks", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: data.title,
-            description: data.description,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to add task");
-        }
-
-        const res = await fetch("http://localhost:5299/api/tasks");
-        if (!res.ok) {
-          throw new Error("Failed to fetch tasks");
-        }
-        const tasks = await res.json();
-
+        await addTask(data);
+        const tasks = await fetchAllTasks();
         reset();
         resetSelectedId();
         setTask(tasks);
@@ -59,31 +41,10 @@ export default function Form({ hideModel, defaultValues }: FormProps) {
       }
     };
   } else {
-    onSubmit = async (data: Content) => {
+    onSubmit = async (data: TaskForm) => {
       try {
-        const response = await fetch(
-          `http://localhost:5299/api/tasks/${selectedId}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              title: data.title,
-              description: data.description,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to add task");
-        }
-        const res = await fetch(`http://localhost:5299/api/tasks`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch tasks");
-        }
-        const tasks = await res.json();
-
+        await editTask(selectedId, data);
+        const tasks = await fetchAllTasks();
         reset();
         resetSelectedId();
         setTask(tasks);

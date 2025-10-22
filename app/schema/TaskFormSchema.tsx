@@ -7,8 +7,4 @@ const taskFormSchema = z.object({
 
 export type TaskForm = z.infer<typeof taskFormSchema>;
 
-export type Content = {
-  title: string,
-  description: string
-}
 

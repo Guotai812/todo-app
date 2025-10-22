@@ -1,6 +1,7 @@
 import Model from "./Model";
 import { Button } from "@/components/ui/button";
 import { useTaskStore } from "../stores/useTaskStore";
+import { deleteTask, fetchAllTasks } from "@/app/services/task-service";
 
 export default function DoubleConfirmModel({
   hideModel,
@@ -12,15 +13,8 @@ export default function DoubleConfirmModel({
   const { selectedId, setTask, resetSelectedId } = useTaskStore();
   const handleDelete = async () => {
     try {
-      const res = await fetch(`http://localhost:5299/api/tasks/${selectedId}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("Failed to delete task");
-
-      const response = await fetch("http://localhost:5299/api/tasks");
-      if (!response.ok) throw new Error("Failed to fetch tasks after delete");
-      const data = await response.json();
+      await deleteTask(selectedId);
+      const data = await fetchAllTasks();
       resetSelectedId();
       setTask(data);
       hideModel();

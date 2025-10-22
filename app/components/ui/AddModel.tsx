@@ -11,7 +11,7 @@ export default function AddModel({ hideModel }: AddModelProps) {
     <Model title="Add New Task" hideModel={hideModel}>
       <Form
         hideModel={hideModel}
-        defaultValues={{ title: "", description: "" }}
+        defaultValues={{ id: "", title: "", description: "" }}
       />
     </Model>
   );

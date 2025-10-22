@@ -15,6 +15,7 @@ export default function EditModel({ hideModel }: EditModelProps) {
       <Form
         hideModel={hideModel}
         defaultValues={{
+          id: task?.id ?? "",
           title: task?.title ?? "",
           description: task?.description || "",
         }}
