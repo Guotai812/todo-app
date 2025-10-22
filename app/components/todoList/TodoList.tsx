@@ -27,7 +27,7 @@ export default function TodoList() {
   };
   useEffect(() => {
     fetchTasks();
-  }, [setTask, reset]);
+  }, [fetchTasks]);
   return (
     <TodoListContainer>
       <TopBar />

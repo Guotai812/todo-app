@@ -24,7 +24,7 @@ export default function Form({ hideModel, defaultValues }: FormProps) {
     taskValue !== defaultValues.title ||
     (description || "") !== (defaultValues.description || "");
 
-  var onSubmit;
+  let onSubmit;
   if (selectedId.trim() === "") {
     onSubmit = async (data: Content) => {
       try {
